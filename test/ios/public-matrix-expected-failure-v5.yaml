@@ -1,0 +1,27 @@
+appId: cnhongwei.reactnativemqtt.example
+name: MQTT 5 public expected failure case
+env:
+  PORT: "8885"
+  EXPECTED: "Not authorized"
+
+onFlowStart:
+  - launchApp:
+      clearState: true
+
+---
+- tapOn:
+    id: mqtt-protocol-5
+- tapOn:
+    id: mqtt-profile
+- extendedWaitUntil:
+    visible:
+      id: listener-${PORT}
+    timeout: 5000
+- tapOn:
+    id: listener-${PORT}
+- tapOn:
+    id: mqtt-connect
+- extendedWaitUntil:
+    visible:
+      id: mqtt-state-error
+    timeout: 30000

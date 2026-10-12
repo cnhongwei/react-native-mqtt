@@ -1,0 +1,212 @@
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2.0.22
+    ports: ["1883:1883", "1884:1884", "8883:8883", "8080:8080"]
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - ./passwd:/mosquitto/config/passwd:ro
+      - mosquitto-data:/mosquitto/data
+  delayed-proxy:
+    image: node:22-alpine
+    depends_on:
+      - mosquitto
+    environment:
+      TARGET_HOST: mosquitto
+      TARGET_PORT: "1883"
+      DELAY_MS: "250"
+    ports:
+      - "2883:2883"
+    volumes:
+      - ./delay-proxy.mjs:/proxy/delay-proxy.mjs:ro
+    command: ["node", "/proxy/delay-proxy.mjs"]
+  ack-drop-proxy:
+    image: node:22-alpine
+    depends_on:
+      - mosquitto
+    environment:
+      TARGET_HOST: mosquitto
+      TARGET_PORT: "1883"
+      DELAY_MS: "0"
+      LISTEN_PORT: "2884"
+      DROP_PACKET_TYPES: "9"
+    ports:
+      - "2884:2884"
+    volumes:
+      - ./delay-proxy.mjs:/proxy/delay-proxy.mjs:ro
+    command: ["node", "/proxy/delay-proxy.mjs"]
+  negative-ack-proxy:
+    image: node:22-alpine
+    depends_on:
+      - mosquitto
+    environment:
+      TARGET_HOST: mosquitto
+      TARGET_PORT: "1883"
+      DELAY_MS: "0"
+      LISTEN_PORT: "2885"
+      NEGATIVE_PACKET_TYPES: "9"
+      NEGATIVE_REASON_CODE: "135"
+    ports:
+      - "2885:2885"
+    volumes:
+      - ./delay-proxy.mjs:/proxy/delay-proxy.mjs:ro
+    command: ["node", "/proxy/delay-proxy.mjs"]
+  negative-puback-proxy:
+    image: node:22-alpine
+    depends_on:
+      - mosquitto
+    environment:
+      TARGET_HOST: mosquitto
+      TARGET_PORT: "1883"
+      DELAY_MS: "0"
+      LISTEN_PORT: "2886"
+      NEGATIVE_PACKET_TYPES: "4"
+      NEGATIVE_REASON_CODE: "135"
+    ports:
+      - "2886:2886"
+    volumes:
+      - ./delay-proxy.mjs:/proxy/delay-proxy.mjs:ro
+    command: ["node", "/proxy/delay-proxy.mjs"]
+  negative-unsuback-proxy:
+    image: node:22-alpine
+    depends_on:
+      - mosquitto
+    environment:
+      TARGET_HOST: mosquitto
+      TARGET_PORT: "1883"
+      DELAY_MS: "0"
+      LISTEN_PORT: "2887"
+      NEGATIVE_PACKET_TYPES: "11"
+      NEGATIVE_REASON_CODE: "135"
+    ports:
+      - "2887:2887"
+    volumes:
+      - ./delay-proxy.mjs:/proxy/delay-proxy.mjs:ro
+    command: ["node", "/proxy/delay-proxy.mjs"]
+  negative-pubrec-proxy:
+    image: node:22-alpine
+    depends_on:
+      - mosquitto
+    environment:
+      TARGET_HOST: mosquitto
+      TARGET_PORT: "1883"
+      DELAY_MS: "0"
+      LISTEN_PORT: "2888"
+      NEGATIVE_PACKET_TYPES: "5"
+      NEGATIVE_REASON_CODE: "135"
+    ports:
+      - "2888:2888"
+    volumes:
+      - ./delay-proxy.mjs:/proxy/delay-proxy.mjs:ro
+    command: ["node", "/proxy/delay-proxy.mjs"]
+  negative-pubcomp-proxy:
+    image: node:22-alpine
+    depends_on:
+      - mosquitto
+    environment:
+      TARGET_HOST: mosquitto
+      TARGET_PORT: "1883"
+      DELAY_MS: "0"
+      LISTEN_PORT: "2890"
+      NEGATIVE_PACKET_TYPES: "7"
+      NEGATIVE_REASON_CODE: "146"
+    ports:
+      - "2890:2890"
+    volumes:
+      - ./delay-proxy.mjs:/proxy/delay-proxy.mjs:ro
+    command: ["node", "/proxy/delay-proxy.mjs"]
+  delayed-pubcomp-proxy:
+    image: node:22-alpine
+    depends_on:
+      - mosquitto
+    environment:
+      TARGET_HOST: mosquitto
+      TARGET_PORT: "1883"
+      DELAY_MS: "0"
+      DELAY_PACKET_TYPES: "7"
+      PACKET_DELAY_MS: "500"
+      LISTEN_PORT: "2892"
+    ports:
+      - "2892:2892"
+    volumes:
+      - ./delay-proxy.mjs:/proxy/delay-proxy.mjs:ro
+    command: ["node", "/proxy/delay-proxy.mjs"]
+  duplicate-pubcomp-proxy:
+    image: node:22-alpine
+    depends_on:
+      - mosquitto
+    environment:
+      TARGET_HOST: mosquitto
+      TARGET_PORT: "1883"
+      DELAY_MS: "0"
+      DUPLICATE_PACKET_TYPES: "7"
+      LISTEN_PORT: "2893"
+    ports:
+      - "2893:2893"
+    volumes:
+      - ./delay-proxy.mjs:/proxy/delay-proxy.mjs:ro
+    command: ["node", "/proxy/delay-proxy.mjs"]
+  drop-pubcomp-proxy:
+    image: node:22-alpine
+    depends_on:
+      - mosquitto
+    environment:
+      TARGET_HOST: mosquitto
+      TARGET_PORT: "1883"
+      DELAY_MS: "0"
+      DROP_PACKET_TYPES: "7"
+      LISTEN_PORT: "2894"
+    ports:
+      - "2894:2894"
+    volumes:
+      - ./delay-proxy.mjs:/proxy/delay-proxy.mjs:ro
+    command: ["node", "/proxy/delay-proxy.mjs"]
+  disconnect-after-pubrec-proxy:
+    image: node:22-alpine
+    depends_on:
+      - mosquitto
+    environment:
+      TARGET_HOST: mosquitto
+      TARGET_PORT: "1883"
+      DELAY_MS: "0"
+      CLOSE_AFTER_UPSTREAM_PACKET_TYPE: "5"
+      LISTEN_PORT: "2895"
+    ports:
+      - "2895:2895"
+    volumes:
+      - ./delay-proxy.mjs:/proxy/delay-proxy.mjs:ro
+    command: ["node", "/proxy/delay-proxy.mjs"]
+  server-disconnect-proxy:
+    image: node:22-alpine
+    depends_on:
+      - mosquitto
+    environment:
+      TARGET_HOST: mosquitto
+      TARGET_PORT: "1883"
+      DELAY_MS: "0"
+      DISCONNECT_DELAY_MS: "1000"
+      DISCONNECT_AFTER_PACKET_TYPE: "9"
+      LISTEN_PORT: "2889"
+      DISCONNECT_REASON_CODE: "135"
+    ports:
+      - "2889:2889"
+    volumes:
+      - ./delay-proxy.mjs:/proxy/delay-proxy.mjs:ro
+    command: ["node", "/proxy/delay-proxy.mjs"]
+  will-probe-proxy:
+    image: node:22-alpine
+    depends_on:
+      - mosquitto
+    environment:
+      TARGET_HOST: mosquitto
+      TARGET_PORT: "1883"
+      DELAY_MS: "0"
+      LISTEN_PORT: "2891"
+      CLOSE_CLIENT_AFTER_PACKET_TYPE: "1"
+      CLOSE_CLIENT_DELAY_MS: "500"
+    ports:
+      - "2891:2891"
+    volumes:
+      - ./delay-proxy.mjs:/proxy/delay-proxy.mjs:ro
+    command: ["node", "/proxy/delay-proxy.mjs"]
+volumes:
+  mosquitto-data:

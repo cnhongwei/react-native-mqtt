@@ -1,0 +1,26 @@
+appId: cnhongwei.reactnativemqtt.example
+name: MQTT 3.1.1 expired TLS certificate case
+env:
+  PORT: "8887"
+
+onFlowStart:
+  - launchApp:
+      clearState: true
+
+---
+- tapOn:
+    id: mqtt-protocol-4
+- tapOn:
+    id: mqtt-profile
+- extendedWaitUntil:
+    visible:
+      id: listener-${PORT}
+    timeout: 5000
+- tapOn:
+    id: listener-${PORT}
+- tapOn:
+    id: mqtt-connect
+- extendedWaitUntil:
+    visible:
+      id: mqtt-state-error
+    timeout: 30000

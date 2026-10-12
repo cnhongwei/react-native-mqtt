@@ -1,0 +1,34 @@
+appId: cnhongwei.reactnativemqtt.example
+name: MQTT public listener matrix case
+env:
+  PROTOCOL: "4"
+  PORT: "1883"
+
+onFlowStart:
+  - launchApp:
+      clearState: true
+
+---
+- tapOn:
+    id: mqtt-protocol-4
+- tapOn:
+    id: mqtt-profile
+- extendedWaitUntil:
+    visible:
+      id: listener-${PORT}
+    timeout: 5000
+- tapOn:
+    id: listener-${PORT}
+- tapOn:
+    id: mqtt-connect
+- extendedWaitUntil:
+    visible: "State: connected"
+    timeout: 120000
+- tapOn:
+    id: mqtt-test-roundtrip
+- extendedWaitUntil:
+    visible:
+      id: mqtt-test-result-pass
+    timeout: 120000
+- tapOn:
+    id: mqtt-disconnect

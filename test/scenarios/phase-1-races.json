@@ -1,0 +1,12 @@
+{
+  "name": "phase-1-spec-scenarios",
+  "clock": "monotonic-virtual",
+  "transport": "controllable-fake",
+  "scenarios": [
+    {"id":"time-units","assert":["connectTimeoutMs is milliseconds","keepAliveSeconds is seconds","deadlines do not use wall clock"]},
+    {"id":"same-turn-connect","actions":["connect","connect"],"assert":["one native connect attempt","both callers share one outcome"]},
+    {"id":"same-filter-concurrent","actions":["subscribe same filter/options","subscribe same filter/options"],"assert":["one SUBSCRIBE","two independent handles"]},
+    {"id":"error-user-info","inputs":["missing userInfo","null userInfo","invalid userInfo","reasonCode=0"],"assert":["code/message retained","reasonCode zero retained"]},
+    {"id":"dispose-race","actions":["open","dispose","late open result"],"assert":["no session resurrected","pending work settles once"]}
+  ]
+}

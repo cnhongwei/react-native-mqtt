@@ -1,0 +1,16 @@
+{
+  "host": "test.mosquitto.org",
+  "listeners": [
+    {"port":1883,"protocol":"mqtt","transport":"tcp","tls":false,"auth":false},
+    {"port":1884,"protocol":"mqtt","transport":"tcp","tls":false,"auth":true},
+    {"port":8883,"protocol":"mqtt","transport":"tcp","tls":true,"auth":false},
+    {"port":8884,"protocol":"mqtt","transport":"tcp","tls":true,"auth":"client-certificate"},
+    {"port":8885,"protocol":"mqtt","transport":"tcp","tls":true,"auth":true},
+    {"port":8886,"protocol":"mqtt","transport":"tcp","tls":true,"auth":false},
+    {"port":8887,"protocol":"mqtt","transport":"tcp","tls":true,"expected":"expired-certificate"},
+    {"port":8080,"protocol":"mqtt","transport":"ws","tls":false,"auth":false},
+    {"port":8081,"protocol":"mqtt","transport":"wss","tls":true,"auth":false},
+    {"port":8090,"protocol":"mqtt","transport":"ws","tls":false,"auth":true},
+    {"port":8091,"protocol":"mqtt","transport":"wss","tls":true,"auth":true}
+  ]
+}

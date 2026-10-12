@@ -1,0 +1,22 @@
+{
+  "name": "@cnhongwei/react-native-mqtt-expo-example",
+  "version": "0.0.1",
+  "private": true,
+  "main": "expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "prebuild": "expo prebuild"
+  },
+  "dependencies": {
+    "@cnhongwei/react-native-mqtt": "workspace:*",
+    "expo": "~57.0.0",
+    "expo-dev-client": "~57.0.18",
+    "expo-splash-screen": "~57.0.8",
+    "react": "19.2.3",
+    "react-native": "0.86.2"
+  },
+  "devDependencies": {
+    "@types/react": "~19.2.4",
+    "typescript": "~6.0.3"
+  }
+}

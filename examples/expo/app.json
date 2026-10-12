@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "ReactNativeMqtt Expo Example",
+    "slug": "react-native-mqtt-expo-example",
+    "version": "0.0.1",
+    "userInterfaceStyle": "automatic",
+    "plugins": ["./plugins/withMqttPodfile"],
+    "ios": {
+      "bundleIdentifier": "com.cnhongwei.mqttexample.expo",
+      "infoPlist": {
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": false,
+          "NSAllowsLocalNetworking": true,
+          "NSExceptionDomains": {
+            "test.mosquitto.org": {
+              "NSExceptionAllowsInsecureHTTPLoads": true,
+              "NSIncludesSubdomains": true
+            }
+          }
+        }
+      }
+    },
+    "android": { "package": "com.cnhongwei.mqttexample.expo" }
+  }
+}

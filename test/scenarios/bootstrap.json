@@ -1,0 +1,6 @@
+{
+  "name": "bootstrap-capability-probe",
+  "input": "openspec/changes/rewrite-native-session-architecture",
+  "steps": ["create", "register-listeners", "connect", "subscribe", "publish", "unsubscribe", "ready", "dispose"],
+  "status": "scaffold-only"
+}

@@ -1,0 +1,5 @@
+{
+  "name": "@cnhongwei/mqtt-client-probes",
+  "private": true,
+  "workspaces": ["rn-paho"]
+}
